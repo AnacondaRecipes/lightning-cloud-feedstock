@@ -14,7 +14,8 @@ build:
     - lightning_cloud=lightning_cloud.cli.__main__:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
-  skip: true  # [py<37]
+  # Skip on linux-s390x because fastapi isn't available.
+  skip: true  # [py<37 or s390x]
 
 requirements:
   host:

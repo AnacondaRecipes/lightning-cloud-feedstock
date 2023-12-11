@@ -12,21 +12,24 @@ source:
 build:
   entry_points:
     - lightning_cloud=lightning_cloud.cli.__main__:main
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
+  # Skip on linux-s390x because fastapi isn't available.
+  skip: true  # [py<37 or s390x]
 
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python
+    - wheel
+    - setuptools
   run:
     - boto3
     - click
     - fastapi
     - pyjwt
-    - python >=3.7
     - python-multipart
+    - python
     - requests
     - rich
     - six
@@ -44,10 +47,14 @@ test:
     - pip
 
 about:
-  home: https://github.com/Lightning-AI/lightning
-  summary: Lightning Cloud
+  home: https://github.com/Lightning-AI/pytorch-lightning
+  summary: Lightning AI Command Line Interface
+  description: Lightning AI Command Line Interface
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
+  dev_url: https://github.com/Lightning-AI/pytorch-lightning
+  doc_url: https://github.com/Lightning-AI/pytorch-lightning
 
 extra:
   recipe-maintainers:

@@ -1,13 +1,13 @@
 {% set name = "lightning-cloud" %}
-{% set version = "0.5.57" %}
+{% set version = "0.5.70" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
-  sha256: 1d30427a2935a367e0bd19873decb564425f1b648901abab2da9318a8b88c80b
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
+  sha256: 026a459f9b4f555439d291c5b1b5a5412173d5546dddf3f95fc6f9eb0f3fbd87
 
 build:
   entry_points:
@@ -36,6 +36,7 @@ requirements:
     - urllib3
     - uvicorn
     - websocket-client
+    - protobuf
 
 test:
   imports:

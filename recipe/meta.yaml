@@ -14,8 +14,7 @@ build:
     - lightning_cloud=lightning_cloud.cli.__main__:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
-  # Skip on linux-s390x because fastapi isn't available.
-  skip: true  # [py<37 or s390x]
+  skip: true  # [py<37]
 
 requirements:
   host:
@@ -24,26 +23,35 @@ requirements:
     - wheel
     - setuptools
   run:
-    - boto3
+    - python
     - click
     - fastapi
     - pyjwt
     - python-multipart
-    - python
     - requests
     - rich
     - six
     - urllib3
     - uvicorn
     - websocket-client
+    - boto3
     - protobuf
 
 test:
   imports:
     - lightning_cloud
+    - lightning_cloud.__version__
+    - lightning_cloud.env
+    - lightning_cloud.login
+    - lightning_cloud.openapi
+    - lightning_cloud.rest_client
+    - lightning_cloud.source_code
+    - lightning_cloud.utils.data_connection
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - lightning_cloud --help
+    # Upstream tests are available on github but there is not pip package version there.
   requires:
     - pip
 

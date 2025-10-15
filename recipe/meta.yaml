@@ -1,21 +1,20 @@
 {% set name = "lightning-cloud" %}
-{% set version = "0.5.57" %}
+{% set version = "0.5.70" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
-  sha256: 1d30427a2935a367e0bd19873decb564425f1b648901abab2da9318a8b88c80b
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
+  sha256: 026a459f9b4f555439d291c5b1b5a5412173d5546dddf3f95fc6f9eb0f3fbd87
 
 build:
   entry_points:
     - lightning_cloud=lightning_cloud.cli.__main__:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
-  # Skip on linux-s390x because fastapi isn't available.
-  skip: true  # [py<37 or s390x]
+  skip: true  # [py<37]
 
 requirements:
   host:
@@ -24,25 +23,35 @@ requirements:
     - wheel
     - setuptools
   run:
-    - boto3
+    - python
     - click
     - fastapi
     - pyjwt
     - python-multipart
-    - python
     - requests
     - rich
     - six
     - urllib3
     - uvicorn
     - websocket-client
+    - boto3
+    - protobuf
 
 test:
   imports:
     - lightning_cloud
+    - lightning_cloud.__version__
+    - lightning_cloud.env
+    - lightning_cloud.login
+    - lightning_cloud.openapi
+    - lightning_cloud.rest_client
+    - lightning_cloud.source_code
+    - lightning_cloud.utils.data_connection
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - lightning_cloud --help
+    # Upstream tests are available on github but there is not pip package version there.
   requires:
     - pip
 

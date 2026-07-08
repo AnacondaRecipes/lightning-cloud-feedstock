@@ -1,17 +1,15 @@
 {% set name = "lightning-cloud" %}
-{% set version = "0.5.70" %}
+{% set version = "0.6.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
-  sha256: 026a459f9b4f555439d291c5b1b5a5412173d5546dddf3f95fc6f9eb0f3fbd87
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
+  sha256: c44e0cde280e32d789ac1117118ce398839e576b7ed7244aaff38d9191e57fbc
 
 build:
-  entry_points:
-    - lightning_cloud=lightning_cloud.cli.__main__:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
   skip: true  # [py<37]
@@ -24,18 +22,12 @@ requirements:
     - setuptools
   run:
     - python
-    - click
     - fastapi
-    - pyjwt
-    - python-multipart
     - requests
     - rich
     - six
     - urllib3
     - uvicorn
-    - websocket-client
-    - boto3
-    - protobuf
 
 test:
   imports:
@@ -50,8 +42,7 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - lightning_cloud --help
-    # Upstream tests are available on github but there is not pip package version there.
+  # Upstream tests are available on github but there is not pip package version there.
   requires:
     - pip
 

@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/lightning_cloud-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
   sha256: c44e0cde280e32d789ac1117118ce398839e576b7ed7244aaff38d9191e57fbc
 
 build:
